@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout
+<RelativeLayout
     	xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -8,35 +8,64 @@
         android:background="#ffffff">
 		
 	    <TextView    
-        	android:id="@+id/deviceName"     
+        	android:id="@+id/deviceName"    
         	android:layout_height="wrap_content"    
         	android:layout_width="wrap_content" 
         	android:textSize="18sp"
         	android:textColor="#FF4500"/>  
           
-    	<TextView     
+    	<TextView   
     	    android:id="@+id/deviceIp"
+    	    android:layout_below="@id/deviceName"
    	     	android:layout_height="wrap_content"    
    	        android:layout_width="wrap_content"      
         	android:textSize="14sp"
         	android:paddingTop="2dp"/>
     	
-    	<TextView     
+    	<TextView    
     	    android:id="@+id/deviceMac"
+    	    android:layout_below="@id/deviceIp"
    	     	android:layout_height="wrap_content"    
    	        android:layout_width="wrap_content"    
         	android:textSize="14sp"/>
     	
-    	<TextView     
+    	<TextView    
     	    android:id="@+id/deviceTopic"
+    	    android:layout_below="@id/deviceMac"
    	     	android:layout_height="wrap_content"    
    	        android:layout_width="wrap_content"    
         	android:textSize="14sp"/>
     	
-    	<TextView     
+    	<TextView    
     	    android:id="@+id/deviceScale"
+    	    android:layout_below="@id/deviceTopic"
    	     	android:layout_height="wrap_content"    
    	        android:layout_width="wrap_content"    
         	android:textSize="14sp"/>
+    	
+    	<Button
+    	    android:id="@+id/deviceConfig"
+ 			android:layout_alignTop="@id/deviceName"
+ 			android:layout_alignParentRight="true"
+ 			android:layout_marginRight="5dp"
+ 			android:layout_marginTop="5dp"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:textSize="14sp"
+    	    android:textColor="#FFFFFF"
+    	    android:background="#00CD66"
+    	    android:text="@string/deviceConfig" />
+    	
+    	<Button
+    	    android:id="@+id/deviceCheck"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_alignRight="@id/deviceConfig"
+    	    android:layout_below="@id/deviceConfig"
+    	    android:layout_marginTop="2dp"
+    	    android:textSize="14sp"
+    	    android:textColor="#FFFFFF"
+    	    android:background="#FF3030"
+    	    android:text="@string/deviceCheck" />
 	  
-</LinearLayout>
+</RelativeLayout>

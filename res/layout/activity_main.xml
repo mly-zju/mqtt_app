@@ -10,13 +10,13 @@
 	<TextView 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:text="hello wrold" 
+	    android:text="hello wrold2" 
 	    android:id="@+id/tv"/>
 	<Button 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:id="@+id/btn"
-	    android:text="@string/test"/>
+	    android:text="test"/>
 	
 	<ListView
 	    android:id="@+id/lv"

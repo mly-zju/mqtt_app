@@ -41,10 +41,11 @@ public class MainActivity extends Activity {
 		@Override 
 		public void handleMessage(Message msg){
 			if(msg.what==0x123){
-				SimpleAdapter myAdapter=new SimpleAdapter(mContext,listitem,R.layout.list_item,
-						new String[]{"deviceName","deviceIp","deviceMac","topic","scale"},
-						new int[]{R.id.deviceName,R.id.deviceIp,R.id.deviceMac,R.id.deviceTopic,
-						R.id.deviceScale});
+//				SimpleAdapter myAdapter=new SimpleAdapter(mContext,listitem,R.layout.list_item,
+//						new String[]{"deviceName","deviceIp","deviceMac","topic","scale"},
+//						new int[]{R.id.deviceName,R.id.deviceIp,R.id.deviceMac,R.id.deviceTopic,
+//						R.id.deviceScale});
+				MyAdapter myAdapter=new MyAdapter(mContext, listitem);
 				listview.setAdapter(myAdapter);
 			}
 		}
