@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="6dp"
     android:orientation="vertical">
     
     <TextView
@@ -15,15 +16,15 @@
     
     <TextView
         android:id="@+id/configIp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
     
      <TextView
         android:id="@+id/configMac"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
      

@@ -7,6 +7,7 @@ import com.example.mqtt_app.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ public class MainActivity extends Activity {
 	private Button btn;
 	private TextView textview;
 	private ListView listview;
+	private MyAdapter myAdapter;
 	private ArrayList<HashMap<String,String>> listitem=new ArrayList<HashMap<String,String>>();
 	private String demoData="[{deviceName:\"testDemo\",deviceIp:\"192.168.0.2\",deviceMac:" +
 			"\"xx:xx:xx:xx:xx:xx\",topic:\"test\",scale:\"temp/day\"}," +
@@ -45,7 +47,7 @@ public class MainActivity extends Activity {
 //						new String[]{"deviceName","deviceIp","deviceMac","topic","scale"},
 //						new int[]{R.id.deviceName,R.id.deviceIp,R.id.deviceMac,R.id.deviceTopic,
 //						R.id.deviceScale});
-				MyAdapter myAdapter=new MyAdapter(mContext, listitem);
+				myAdapter=new MyAdapter(mContext, listitem);
 				listview.setAdapter(myAdapter);
 			}
 		}
@@ -62,13 +64,72 @@ public class MainActivity extends Activity {
         mqttInit();
         bindEvent();
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode==1000&&resultCode==1001){
+			int index=Integer.parseInt(data.getStringExtra("deviceId"));
+			HashMap<String,String> tmp=new HashMap<String,String>();
+			tmp.put("deviceName",data.getStringExtra("deviceName"));
+			tmp.put("deviceIp",data.getStringExtra("deviceIp"));
+			tmp.put("deviceMac",data.getStringExtra("deviceMac"));
+			tmp.put("topic",data.getStringExtra("deviceTopic"));
+			tmp.put("scale",data.getStringExtra("deviceScale"));
+			tmp.put("deviceId", ""+index);
+			tmp.put("currentTime",listitem.get(index).get("currentTime"));
+			tmp.put("deviceManufac", listitem.get(index).get("deviceManufac"));
+			listitem.set(index,tmp);
+			myAdapter.notifyDataSetChanged();
+			new Thread(new Runnable(){
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					String data;
+					try {
+						data = reverseData();
+						client.publish("change_data", new MqttMessage(data.getBytes()));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+				}
+
+				private String reverseData() throws JSONException {
+					// TODO Auto-generated method stub
+					JSONArray jsonArray=new JSONArray();
+					for(int i=0;i<listitem.size();i++){
+						HashMap<String,String> tmpObj=listitem.get(i);
+						JSONObject jb=new JSONObject();
+						for(String key:tmpObj.keySet()){
+							String tmp=tmpObj.get(key);
+							if(key.equals("currentTime")||key.equals("deviceManufac")||
+									key.equals("deviceId")){
+								jb.put(key, tmp);
+							}else{
+								int begin=tmp.indexOf(':');
+								if(tmp.length()>begin+1){
+									jb.put(key, tmp.substring(begin+2));
+								}else{
+									jb.put(key, "");
+								}
+							}
+						}
+						jsonArray.put(jb);
+					}
+					return jsonArray.toString();
+				}
+				
+			}).start();
+		}
+	}
 
 	private void bindEvent() {
 		class BtnClickListener implements View.OnClickListener{
 			@Override
 			public void onClick(View v) {
 				try {
-					Log.i("test","enter click");
 					//mqtt publish
 				} catch (Exception e) {
 					Log.i("test",e.toString());
@@ -109,7 +170,9 @@ public class MainActivity extends Activity {
 									MqttMessage message) throws Exception {
 								// TODO Auto-generated method stub
 									if(topicName.equals("post_data")){
+										Log.i("test5","message arrived!");
 										payloadString=message.toString();
+										Log.i("test5",payloadString);
 										parseData(payloadString);
 										myHandler.sendEmptyMessage(0x123);
 									}
@@ -141,6 +204,9 @@ public class MainActivity extends Activity {
 				data.put("deviceMac", "MAC地址: "+obj.getString("deviceMac"));
 				data.put("topic", "主题: "+obj.getString("topic"));
 				data.put("scale", "坐标单位(y/x): "+obj.getString("scale"));
+				data.put("deviceId", Integer.toString(i));
+				data.put("currentTime", obj.getString("currentTime"));
+				data.put("deviceManufac", obj.getString("deviceManufac"));
 				listitem.add(data);
 			}
 		} catch (JSONException e) {

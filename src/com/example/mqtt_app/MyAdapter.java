@@ -82,8 +82,9 @@ public class MyAdapter extends BaseAdapter {
 				intent.putExtra("deviceMac", mContent.get("deviceMac"));
 				intent.putExtra("topic", mContent.get("topic"));
 				intent.putExtra("scale", mContent.get("scale"));
+				intent.putExtra("deviceId", mContent.get("deviceId"));
 				intent.setClass(mContext,ConfigActivity.class);
-				mContext.startActivity(intent);
+				((Activity) mContext).startActivityForResult(intent,1000);
 			}else if(v.getId()==R.id.deviceCheck){
 				Toast.makeText(mContext, "查看按钮被点击", Toast.LENGTH_SHORT).show();
 			}
