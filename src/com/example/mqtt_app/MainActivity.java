@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ import org.json.*;
 public class MainActivity extends Activity {
 	private Context mContext;
 	private Button btn;
-	private TextView textview;
+	private EditText et;
 	private ListView listview;
 	private MyAdapter myAdapter;
 	private ArrayList<HashMap<String,String>> listitem=new ArrayList<HashMap<String,String>>();
@@ -33,6 +34,10 @@ public class MainActivity extends Activity {
 			"\"xx:xx:xx:xx:xx:xx\",topic:\"test\",scale:\"temp/day\"}," +
 			"{deviceName:\"testDemo2\",deviceIp:\"192.168.0.3\",deviceMac:" +
 			"\"xx:xx:xx:xx:xx:xx\",topic:\"test2\",scale:\"temp/day\"}]"; //这个是fake数据
+	
+	private ArrayList<Float> singleItem=new ArrayList<Float>();
+	private String singleDeviceName;
+	private String singleDeviceY;
 	
 	private MqttClient client;
 	private MqttConnectOptions options;
@@ -49,6 +54,18 @@ public class MainActivity extends Activity {
 //						R.id.deviceScale});
 				myAdapter=new MyAdapter(mContext, listitem);
 				listview.setAdapter(myAdapter);
+			}else if(msg.what==0x124){
+				Log.i("test",singleItem.get(0).toString());
+				Intent intent=new Intent();
+				int len=singleItem.size();
+				intent.putExtra("len", len);
+				for(int i=0;i<len;i++){
+					intent.putExtra(i+"", singleItem.get(i));
+				}
+				intent.putExtra("deviceName", singleDeviceName);
+				intent.putExtra("deviceScaleY", singleDeviceY);
+				intent.setClass(mContext, DataActivity.class);
+				startActivity(intent);
 			}
 		}
 	};
@@ -58,10 +75,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);  
         setContentView(R.layout.activity_main);
         btn=(Button) findViewById(R.id.btn);
-        textview=(TextView) findViewById(R.id.tv);
+        et=(EditText) findViewById(R.id.et);
         listview=(ListView) findViewById(R.id.lv);
         mContext=this;
-        mqttInit();
+        //mqttInit();
         bindEvent();
 	}
 	
@@ -129,18 +146,23 @@ public class MainActivity extends Activity {
 		class BtnClickListener implements View.OnClickListener{
 			@Override
 			public void onClick(View v) {
-				try {
-					//mqtt publish
-				} catch (Exception e) {
-					Log.i("test",e.toString());
-					e.printStackTrace();
+				if(v.getId()==R.id.btn){
+					try {
+						//mqtt publish
+						String ip=et.getText().toString();
+						url="tcp://"+ip+":1883";
+						mqttInit();
+					} catch (Exception e) {
+						Log.i("test",e.toString());
+						e.printStackTrace();
+					}
 				}
 			}
 		}
 		btn.setOnClickListener(new BtnClickListener());
 	}
 	
-	private void mqttInit(){
+	public void mqttInit(){
 		try{
 			client=new MqttClient(url,"demo",new MemoryPersistence());
 			options=new MqttConnectOptions();
@@ -151,6 +173,7 @@ public class MainActivity extends Activity {
 					try {
 						client.connect(options);
 						client.subscribe("post_data");
+						client.subscribe("post_single_data");
 						client.setCallback(new MqttCallback(){
 
 							@Override
@@ -170,11 +193,16 @@ public class MainActivity extends Activity {
 									MqttMessage message) throws Exception {
 								// TODO Auto-generated method stub
 									if(topicName.equals("post_data")){
-										Log.i("test5","message arrived!");
+//										Log.i("test5","message arrived!");
 										payloadString=message.toString();
-										Log.i("test5",payloadString);
+//										Log.i("test5",payloadString);
 										parseData(payloadString);
 										myHandler.sendEmptyMessage(0x123);
+									}else if(topicName.equals("post_single_data")){
+										payloadString=message.toString();
+										Log.i("test!",payloadString);
+										parseSingleData(payloadString);
+										myHandler.sendEmptyMessage(0x124);
 									}
 							}
 							
@@ -213,6 +241,52 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void parseSingleData(String payload){
+		try{
+			JSONArray jsonArray=(JSONArray) new JSONArray(payload);
+			singleItem.clear();
+			for(int i=1;i<jsonArray.length();i++){
+//				int tmp=((Integer) jsonArray.get(i)).intValue();
+//				singleItem.add((float) tmp);
+				String tmp=jsonArray.getString(i);
+				singleItem.add(Float.parseFloat(tmp));
+			}
+		}catch(Exception e){
+			Log.i("err",e.toString());
+			e.printStackTrace();
+		}
+	}
+	
+	public void pullSingleData(final String id){
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					singleDeviceName=listitem.get(Integer.parseInt(id)).get("deviceName");
+					String tmp=listitem.get(Integer.parseInt(id)).get("scale");
+					int begin=tmp.indexOf(':')+1;
+			        int end=tmp.indexOf('/',begin);
+			        if(end-begin>1){
+			        	singleDeviceY=tmp.substring(begin+1,end);
+			        }else{
+			        	singleDeviceY="";
+			        }
+					
+					client.publish("pull_single_data",new MqttMessage(id.getBytes()));
+				} catch (MqttPersistenceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (MqttException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}).start();
 	}
 	
 }

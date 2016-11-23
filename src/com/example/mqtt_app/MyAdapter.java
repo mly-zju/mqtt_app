@@ -86,10 +86,13 @@ public class MyAdapter extends BaseAdapter {
 				intent.setClass(mContext,ConfigActivity.class);
 				((Activity) mContext).startActivityForResult(intent,1000);
 			}else if(v.getId()==R.id.deviceCheck){
-				Toast.makeText(mContext, "查看按钮被点击", Toast.LENGTH_SHORT).show();
+//				Intent intent=new Intent();
+//				intent.setClass(mContext, DataActivity.class);
+				((MainActivity)mContext).pullSingleData(mContent.get("deviceId"));
+//				mContext.startActivity(intent);
 			}
 		}
-		
+
 	}
 	
 }

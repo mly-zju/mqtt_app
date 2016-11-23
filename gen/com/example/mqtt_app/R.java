@@ -14,7 +14,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int btn=0x7f060009;
+        public static final int btn=0x7f06000b;
         public static final int configIp=0x7f060001;
         public static final int configMac=0x7f060002;
         public static final int configName=0x7f060000;
@@ -23,23 +23,27 @@ public final class R {
         public static final int configScaleY=0x7f060004;
         public static final int configTopic=0x7f060003;
         public static final int configYes=0x7f060006;
-        public static final int deviceCheck=0x7f060011;
-        public static final int deviceConfig=0x7f060010;
-        public static final int deviceIp=0x7f06000c;
-        public static final int deviceMac=0x7f06000d;
-        public static final int deviceName=0x7f06000b;
-        public static final int deviceScale=0x7f06000f;
-        public static final int deviceTopic=0x7f06000e;
-        public static final int lv=0x7f06000a;
-        public static final int tv=0x7f060008;
+        public static final int data_back=0x7f060009;
+        public static final int deviceCheck=0x7f060013;
+        public static final int deviceConfig=0x7f060012;
+        public static final int deviceIp=0x7f06000e;
+        public static final int deviceMac=0x7f06000f;
+        public static final int deviceName=0x7f06000d;
+        public static final int deviceScale=0x7f060011;
+        public static final int deviceTopic=0x7f060010;
+        public static final int device_name=0x7f060008;
+        public static final int et=0x7f06000a;
+        public static final int lv=0x7f06000c;
     }
     public static final class layout {
         public static final int activity_config=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int list_item=0x7f030002;
+        public static final int activity_data=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int list_item=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int data_back=0x7f040003;
         public static final int deviceCheck=0x7f040002;
         public static final int deviceConfig=0x7f040001;
     }

@@ -3,5 +3,6 @@
     <string name="app_name">MQTT智能家居</string>
     <string name="deviceConfig">配置设备</string>
     <string name="deviceCheck">查看数据</string>
+    <string name="data_back">返回</string>
 
 </resources>
