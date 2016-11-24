@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="scalex">
+       <item>小时(显示一天内每小时的数据)</item>
+       <item>日(显示一周内每天的数据)</item>
+    </string-array>
+</resources>

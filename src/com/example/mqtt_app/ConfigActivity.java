@@ -6,21 +6,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class ConfigActivity extends Activity {
 	
 	private EditText configName;
 	private EditText configTopic;
-	private EditText configScaleX;
+	private Spinner configScaleX;
 	private EditText configScaleY;
 	private TextView configIp;
 	private TextView configMac;
 	private Button configYes,configNo;
 	private String configId;
+	private String bufScaleX="";
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {    
@@ -28,7 +32,7 @@ public class ConfigActivity extends Activity {
         setContentView(R.layout.activity_config);
         configName=(EditText) findViewById(R.id.configName);
         configTopic=(EditText) findViewById(R.id.configTopic);
-        configScaleX=(EditText) findViewById(R.id.configScaleX);
+        configScaleX=(Spinner) findViewById(R.id.configScaleX);
         configScaleY=(EditText) findViewById(R.id.configScaleY);
         configIp=(TextView) findViewById(R.id.configIp);
         configMac=(TextView) findViewById(R.id.configMac);
@@ -53,7 +57,7 @@ public class ConfigActivity extends Activity {
 				intent.putExtra("deviceMac",tmp);
 				intent.putExtra("deviceTopic","主题: "+getString(configTopic));
 				intent.putExtra("deviceScale","坐标单位(y/x): "+getString(configScaleY)
-						+"/"+getString(configScaleX));
+						+"/"+bufScaleX);
 				intent.putExtra("deviceId",configId);
 				setResult(1001,intent);
 				finish();
@@ -75,6 +79,28 @@ public class ConfigActivity extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				finish();
+			}
+			
+		});
+		
+		configScaleX.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View v,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				String tmp=parent.getItemAtPosition(position).toString();
+				if(tmp.indexOf("日")!=-1){
+					bufScaleX="day";
+				}else{
+					bufScaleX="hour";
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
 			}
 			
 		});
@@ -107,9 +133,15 @@ public class ConfigActivity extends Activity {
         	configScaleY.setHint(" ");
         }
         if(tmp.length()-end>1){
-        	configScaleX.setHint(tmp.substring(end+1));
+        	bufScaleX=tmp.substring(end+1);
+        	Log.i("str",bufScaleX);
         }else{
-        	configScaleX.setHint(" ");
+        	bufScaleX="day";
+        }
+        if(bufScaleX.equals("hour")){
+        	configScaleX.setSelection(0,true);
+        }else{
+        	configScaleX.setSelection(1,true);
         }
         configIp.setText(intent.getStringExtra("deviceIp"));
         configMac.setText(intent.getStringExtra("deviceMac"));

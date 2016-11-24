@@ -50,10 +50,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="坐标单位(X轴): "/>
+       <!--
       <EditText
         android:id="@+id/configScaleX"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"/> -->
+	  
+	  <Spinner
+	      android:id="@+id/configScaleX"
+	      android:layout_width="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:entries="@array/scalex"/>
       
       <LinearLayout 
           android:layout_width="fill_parent"
