@@ -43,6 +43,13 @@
    	        android:layout_width="wrap_content"    
         	android:textSize="14sp"/>
     	
+    	<TextView
+    	    android:id="@+id/deviceQos"
+    	    android:layout_below="@id/deviceScale"
+    	    android:layout_height="wrap_content"
+    	    android:layout_width="wrap_content"
+    	    android:textSize="14sp"/>
+    	
     	<Button
     	    android:id="@+id/deviceConfig"
  			android:layout_alignTop="@id/deviceName"

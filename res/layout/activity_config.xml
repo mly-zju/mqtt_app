@@ -61,6 +61,17 @@
 	      android:layout_width="fill_parent"
 	      android:layout_height="wrap_content"
 	      android:entries="@array/scalex"/>
+	  
+	   <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="QOS优先级: "/>
+	  
+	  <Spinner
+	      android:id="@+id/configQos"
+	      android:layout_width="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:entries="@array/qos"/>
       
       <LinearLayout 
           android:layout_width="fill_parent"

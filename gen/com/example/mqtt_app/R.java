@@ -9,6 +9,7 @@ package com.example.mqtt_app;
 
 public final class R {
     public static final class array {
+        public static final int qos=0x7f040001;
         public static final int scalex=0x7f040000;
     }
     public static final class attr {
@@ -17,26 +18,28 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int btn=0x7f07000b;
+        public static final int btn=0x7f07000c;
         public static final int configIp=0x7f070001;
         public static final int configMac=0x7f070002;
         public static final int configName=0x7f070000;
-        public static final int configNo=0x7f070007;
+        public static final int configNo=0x7f070008;
+        public static final int configQos=0x7f070006;
         public static final int configScaleX=0x7f070005;
         public static final int configScaleY=0x7f070004;
         public static final int configTopic=0x7f070003;
-        public static final int configYes=0x7f070006;
-        public static final int data_back=0x7f070009;
-        public static final int deviceCheck=0x7f070013;
-        public static final int deviceConfig=0x7f070012;
-        public static final int deviceIp=0x7f07000e;
-        public static final int deviceMac=0x7f07000f;
-        public static final int deviceName=0x7f07000d;
-        public static final int deviceScale=0x7f070011;
-        public static final int deviceTopic=0x7f070010;
-        public static final int device_name=0x7f070008;
-        public static final int et=0x7f07000a;
-        public static final int lv=0x7f07000c;
+        public static final int configYes=0x7f070007;
+        public static final int data_back=0x7f07000a;
+        public static final int deviceCheck=0x7f070015;
+        public static final int deviceConfig=0x7f070014;
+        public static final int deviceIp=0x7f07000f;
+        public static final int deviceMac=0x7f070010;
+        public static final int deviceName=0x7f07000e;
+        public static final int deviceQos=0x7f070013;
+        public static final int deviceScale=0x7f070012;
+        public static final int deviceTopic=0x7f070011;
+        public static final int device_name=0x7f070009;
+        public static final int et=0x7f07000b;
+        public static final int lv=0x7f07000d;
     }
     public static final class layout {
         public static final int activity_config=0x7f030000;

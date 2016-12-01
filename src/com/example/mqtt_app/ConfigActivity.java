@@ -19,12 +19,14 @@ public class ConfigActivity extends Activity {
 	private EditText configName;
 	private EditText configTopic;
 	private Spinner configScaleX;
+	private Spinner configQos;
 	private EditText configScaleY;
 	private TextView configIp;
 	private TextView configMac;
 	private Button configYes,configNo;
 	private String configId;
 	private String bufScaleX="";
+	private String bufQos="";
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {    
@@ -38,6 +40,7 @@ public class ConfigActivity extends Activity {
         configMac=(TextView) findViewById(R.id.configMac);
         configYes=(Button) findViewById(R.id.configYes);
         configNo=(Button) findViewById(R.id.configNo);
+        configQos=(Spinner) findViewById(R.id.configQos);
         displayConfigData();
         bindEvent();
 	}
@@ -59,6 +62,7 @@ public class ConfigActivity extends Activity {
 				intent.putExtra("deviceScale","坐标单位(y/x): "+getString(configScaleY)
 						+"/"+bufScaleX);
 				intent.putExtra("deviceId",configId);
+				intent.putExtra("qos", "qos优先级: "+bufQos);
 				setResult(1001,intent);
 				finish();
 			}
@@ -94,6 +98,30 @@ public class ConfigActivity extends Activity {
 					bufScaleX="day";
 				}else{
 					bufScaleX="hour";
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		configQos.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View v,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				String tmp=parent.getItemAtPosition(position).toString();
+				if(tmp.indexOf('0')!=-1){
+					bufQos="0";
+				}else if(tmp.indexOf('1')!=-1){
+					bufQos="1";
+				}else{
+					bufQos="2";
 				}
 			}
 
@@ -142,6 +170,18 @@ public class ConfigActivity extends Activity {
         	configScaleX.setSelection(0,true);
         }else{
         	configScaleX.setSelection(1,true);
+        }
+        tmp=intent.getStringExtra("qos");
+        begin=tmp.indexOf(':')+1;
+        bufQos=tmp.substring(begin+1);
+        Log.i("test",bufQos);
+        if(bufQos.equals("0")){
+        	configQos.setSelection(0);
+        }else if(bufQos.equals("1")){
+        	Log.i("test",bufQos);
+        	configQos.setSelection(1);
+        }else{
+        	configQos.setSelection(2);
         }
         configIp.setText(intent.getStringExtra("deviceIp"));
         configMac.setText(intent.getStringExtra("deviceMac"));

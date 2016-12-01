@@ -51,11 +51,13 @@ public class MyAdapter extends BaseAdapter {
 		TextView deviceMac=(TextView) convertView.findViewById(R.id.deviceMac);
 		TextView deviceTopic=(TextView) convertView.findViewById(R.id.deviceTopic);
 		TextView deviceScale=(TextView) convertView.findViewById(R.id.deviceScale);
+		TextView deviceQos=(TextView) convertView.findViewById(R.id.deviceQos);
 		deviceName.setText(listitem.get(position).get("deviceName"));
 		deviceIp.setText(listitem.get(position).get("deviceIp"));
 		deviceMac.setText(listitem.get(position).get("deviceMac"));
 		deviceTopic.setText(listitem.get(position).get("topic"));
 		deviceScale.setText(listitem.get(position).get("scale"));
+		deviceQos.setText(listitem.get(position).get("qos"));
 		
 		Button deviceConfig=(Button) convertView.findViewById(R.id.deviceConfig);
 		Button deviceCheck=(Button) convertView.findViewById(R.id.deviceCheck);
@@ -83,6 +85,7 @@ public class MyAdapter extends BaseAdapter {
 				intent.putExtra("topic", mContent.get("topic"));
 				intent.putExtra("scale", mContent.get("scale"));
 				intent.putExtra("deviceId", mContent.get("deviceId"));
+				intent.putExtra("qos", mContent.get("qos"));
 				intent.setClass(mContext,ConfigActivity.class);
 				((Activity) mContext).startActivityForResult(intent,1000);
 			}else if(v.getId()==R.id.deviceCheck){

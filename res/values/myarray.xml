@@ -4,4 +4,9 @@
        <item>小时(显示一天内每小时的数据)</item>
        <item>日(显示一周内每天的数据)</item>
     </string-array>
+     <string-array name="qos">
+       <item>0(至多一次)</item>
+       <item>1(至少一次)</item>
+       <item>2(至多一次)</item>
+    </string-array>
 </resources>

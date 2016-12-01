@@ -96,6 +96,8 @@ public class MainActivity extends Activity {
 			tmp.put("deviceId", ""+index);
 			tmp.put("currentTime",listitem.get(index).get("currentTime"));
 			tmp.put("deviceManufac", listitem.get(index).get("deviceManufac"));
+			tmp.put("qos",data.getStringExtra("qos"));
+			Log.i("test",tmp.toString());
 			listitem.set(index,tmp);
 			myAdapter.notifyDataSetChanged();
 			new Thread(new Runnable(){
@@ -235,6 +237,7 @@ public class MainActivity extends Activity {
 				data.put("deviceId", Integer.toString(i));
 				data.put("currentTime", obj.getString("currentTime"));
 				data.put("deviceManufac", obj.getString("deviceManufac"));
+				data.put("qos", "qos优先级: "+obj.getString("qos"));
 				listitem.add(data);
 			}
 		} catch (JSONException e) {
