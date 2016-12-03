@@ -38,6 +38,8 @@ public class MainActivity extends Activity {
 	private ArrayList<Float> singleItem=new ArrayList<Float>();
 	private String singleDeviceName;
 	private String singleDeviceY;
+	private String singleDeviceX;
+	private String singleCurrentTime;
 	
 	private MqttClient client;
 	private MqttConnectOptions options;
@@ -64,6 +66,8 @@ public class MainActivity extends Activity {
 				}
 				intent.putExtra("deviceName", singleDeviceName);
 				intent.putExtra("deviceScaleY", singleDeviceY);
+				intent.putExtra("deviceScaleX", singleDeviceX);
+				intent.putExtra("currentTime", singleCurrentTime);
 				intent.setClass(mContext, DataActivity.class);
 				startActivity(intent);
 			}
@@ -94,7 +98,12 @@ public class MainActivity extends Activity {
 			tmp.put("topic",data.getStringExtra("deviceTopic"));
 			tmp.put("scale",data.getStringExtra("deviceScale"));
 			tmp.put("deviceId", ""+index);
-			tmp.put("currentTime",listitem.get(index).get("currentTime"));
+			String d=data.getStringExtra("currentTime");
+			if(d.equals("")){
+				tmp.put("currentTime",listitem.get(index).get("currentTime"));
+			}else{
+				tmp.put("currentTime", d);
+			}
 			tmp.put("deviceManufac", listitem.get(index).get("deviceManufac"));
 			tmp.put("qos",data.getStringExtra("qos"));
 			Log.i("test",tmp.toString());
@@ -278,6 +287,9 @@ public class MainActivity extends Activity {
 			        }else{
 			        	singleDeviceY="";
 			        }
+			        begin=end+1;
+			        singleDeviceX=tmp.substring(begin);
+			        singleCurrentTime=listitem.get(Integer.parseInt(id)).get("currentTime");
 					
 					client.publish("pull_single_data",new MqttMessage(id.getBytes()));
 				} catch (MqttPersistenceException e) {

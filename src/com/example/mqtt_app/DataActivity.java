@@ -32,7 +32,9 @@ public class DataActivity extends Activity{
 		}
 		String deviceName=intent.getStringExtra("deviceName");
 		String deviceScaleY=intent.getStringExtra("deviceScaleY");
-		myview=new MyView(this,d, deviceName, deviceScaleY);
+		String deviceScaleX=intent.getStringExtra("deviceScaleX");
+		String currentTime=intent.getStringExtra("currentTime");
+		myview=new MyView(this,d, deviceName, deviceScaleY, deviceScaleX, currentTime);
         //myview.setData(d);  
 	
 		setContentView(R.layout.activity_data);

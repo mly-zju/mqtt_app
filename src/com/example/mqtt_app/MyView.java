@@ -51,7 +51,13 @@ public class MyView extends View implements Runnable {
     private static boolean isWeek;
     private static int timeNow;
     
-    private String[] week={"周日","周一","周二","周三","周四","周五","周六"};
+    //private String[] week={"周日","周一","周二","周三","周四","周五","周六"};
+    private String[] week={"周二","周三","周四","周五","周六","周日","周一"};
+    
+    private String[] hour={"01", "02", "03", "04", "05", "06",
+    		"07", "08", "09", "10", "11", "12", "13", "14", "15",
+    		"16", "17", "18", "19", "20", "21", "22", "23", "00"
+    };
                         
     public MyView(Context context) { 
         super(context); 
@@ -73,32 +79,34 @@ public class MyView extends View implements Runnable {
         new Thread(this).start();
     } 
     
-    public MyView(Context context, ArrayList<Float> d, String deviceName, String deviceScaleY) { 
+    public MyView(Context context, ArrayList<Float> d, String deviceName, 
+    		String deviceScaleY, String deviceScaleX, String currentTime) { 
         super(context); 
         data=d;
         YName=deviceScaleY;
         this.deviceName=deviceName;
         
         paint=new Paint();
-        MaxDataSize=d.size();
-        if(MaxDataSize==7){
+        //MaxDataSize=d.size();
+        if(deviceScaleX.equals("day")){
+        	MaxDataSize=7;
         	isWeek=true;
-        	Calendar cal=Calendar.getInstance();
-            cal.setTime(new Date());
-            timeNow=cal.get(Calendar.DAY_OF_WEEK);
         }else{
+        	MaxDataSize=24;
         	isWeek=false;
-        	SimpleDateFormat ft = new SimpleDateFormat ("H");
-        	timeNow=Integer.parseInt(ft.format(new Date()));
         }
+        Log.i("test",deviceScaleX);
+        Log.i("test",MaxDataSize+"");
+        timeNow=Integer.parseInt(currentTime);
         
     	XScale=XLength/(MaxDataSize-1);
     	
     	Log.i("myview","first");
-    	int len=data.size();
+    	Log.i("myview",XScale+"");
+    	//int len=data.size();
     	float tmpMax,tmpMin;
-    	tmpMax=tmpMin=data.get(0);
-    	for(int i=1;i<len;i++){
+    	tmpMax=tmpMin=data.get(24-MaxDataSize);
+    	for(int i=24-MaxDataSize+1;i<24;i++){
     		if(data.get(i)>tmpMax){
     			tmpMax=data.get(i);
     		}
@@ -130,6 +138,7 @@ public class MyView extends View implements Runnable {
     	Log.i("myview",YLength+" -YLength");
     	Log.i("myview",YMax-YMin+" -max-min");
     	Log.i("myview",YScale+" -YScale");
+    	Log.i("myview","new!");
     	float gap=(float)(YMax-YMin)/4;
     	Log.i("myview",gap+" -gap");
     	for(int i=0;i<5;i++){
@@ -178,14 +187,16 @@ public class MyView extends View implements Runnable {
         canvas.drawLine(XPoint+XLength+20, YPoint, XPoint+XLength+20-6, YPoint-3, paint);
         canvas.drawLine(XPoint+XLength+20, YPoint, XPoint+XLength+20-6, YPoint+3, paint);
         
-        for(int i=0; i<MaxDataSize;i++){
-        	canvas.drawLine(XPoint+i*XScale, YPoint, XPoint+i*XScale, YPoint+5, paint);
+        int begin=24-MaxDataSize;
+        for(int i=begin; i<24;i++){
+        	canvas.drawLine(XPoint+(i-begin)*XScale, YPoint, XPoint+(i-begin)*XScale, YPoint+5, paint);
         	if(isWeek){
-        		int index=(timeNow+i)%7;
-        		canvas.drawText(week[index], XPoint+i*XScale-15, YPoint+20, paint);
+        		int index=(timeNow+i-begin)%7;
+        		canvas.drawText(week[index], XPoint+(i-begin)*XScale-5, YPoint+20, paint);
+        		//canvas.drawText(index+"", XPoint+(i-begin)*XScale-5, YPoint+20, paint);
         	}else{
-        		int index=(timeNow+i)%24;
-        		canvas.drawText(index+"", XPoint+i*XScale-5, YPoint+20, paint);
+        		int index=(timeNow+i-begin)%24;
+        		canvas.drawText(hour[index], XPoint+(i-begin)*XScale-5, YPoint+20, paint);
         	}
         }
                         
@@ -200,8 +211,9 @@ public class MyView extends View implements Runnable {
         if (data.size() > 1) { 
             Path path = new Path(); 
             path.moveTo(XPoint, YPoint); 
-            for (int i = 0; i < data.size(); i++) { 
-                path.lineTo(XPoint + i * XScale, YPoint -(data.get(i)-YMin) * YScale); 
+            begin=24-MaxDataSize;
+            for (int i = begin; i < 24; i++) { 
+                path.lineTo(XPoint + (i-begin) * XScale, YPoint -(data.get(i)-YMin) * YScale); 
             } 
             //path.lineTo(XPoint + (data.size() - 1) * XScale, YPoint); 
             canvas.drawPath(path, paint); 

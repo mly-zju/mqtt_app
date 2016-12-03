@@ -1,5 +1,9 @@
 package com.example.mqtt_app;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +31,7 @@ public class ConfigActivity extends Activity {
 	private String configId;
 	private String bufScaleX="";
 	private String bufQos="";
+	private String bufCurrentTime="";
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {    
@@ -63,6 +68,7 @@ public class ConfigActivity extends Activity {
 						+"/"+bufScaleX);
 				intent.putExtra("deviceId",configId);
 				intent.putExtra("qos", "qos优先级: "+bufQos);
+				intent.putExtra("currentTime", bufCurrentTime);
 				setResult(1001,intent);
 				finish();
 			}
@@ -96,8 +102,20 @@ public class ConfigActivity extends Activity {
 				String tmp=parent.getItemAtPosition(position).toString();
 				if(tmp.indexOf("日")!=-1){
 					bufScaleX="day";
+					Calendar cal=Calendar.getInstance();
+				    cal.setTime(new Date());
+				    int x=cal.get(Calendar.DAY_OF_WEEK);
+				    if(x-1==0){
+				    	x=6;
+				    }else{
+				     x=x-1;
+				    }
+				    bufCurrentTime=x+"";
 				}else{
 					bufScaleX="hour";
+					SimpleDateFormat ft = new SimpleDateFormat ("H");    
+					String m=ft.format(new Date());
+					bufCurrentTime=m;
 				}
 			}
 
