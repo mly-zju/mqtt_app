@@ -104,12 +104,15 @@ public class ConfigActivity extends Activity {
 					bufScaleX="day";
 					Calendar cal=Calendar.getInstance();
 				    cal.setTime(new Date());
+				    boolean isFirstSunday = (cal.getFirstDayOfWeek() == Calendar.SUNDAY); 
 				    int x=cal.get(Calendar.DAY_OF_WEEK);
-				    if(x-1==0){
-				    	x=6;
-				    }else{
-				     x=x-1;
+				    if(isFirstSunday){
+				    	x=x-1;
+				    	if(x<0){
+				    		x=7;
+				    	}
 				    }
+				    x=x-1;
 				    bufCurrentTime=x+"";
 				}else{
 					bufScaleX="hour";
